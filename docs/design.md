@@ -262,24 +262,25 @@ Each has a full spec in `docs/specs/`. Line counts exclude comments, blank lines
 
 ## 10. Honesty section
 
-**Left out:**
-- Identity resolution (A2).
-- Cross-table consistency for near-real-time readers.
-- The feature store.
-- The tokenisation vault's own design.
-- Airflow DAGs, connector configs, infrastructure code, the Vertica API, generating expected arrivals, and the waiver workflow: described, not built.
-- A full cost model; only S3 is computed.
+### 10.1 What I deliberately left out
+- **Identity resolution.** I assumed one `customer_id` across the businesses (A2).
+- **Cross-table consistency for near-real-time readers.** Finance reads only certified days, so it isn't affected.
+- **The feature store and point-in-time joins.** They would build on the change history from #1.
+- **The tokenisation vault's own design.** It's a security-owned service; I only define how the platform uses it.
+- **Plumbing I describe but didn't build:** Airflow DAGs, connector configs, infrastructure code, the Vertica API, generating expected arrivals, and the waiver workflow.
+- **Tests beyond the hardest two.** #1 and #2 have real test code; the rest, including all of #3, is a written plan.
+- **A full cost model.** Only the S3 figure is computed.
+- **What I chose not to cut:** about 550 lines of guarantee code against the brief's rough 200–400, plus about 355 lines of plumbing kept so the job compiles. Cutting further would have removed guarantee logic; the README counts the two separately.
 
-**Unsure:**
+### 10.2 Where I'm unsure
 - Whether connector v3 handles the offset gaps from transactional topics (a test is planned).
 - Details to verify when pinning versions: Debezium transform field names, MySQL `source.pos` semantics, and a few Snowflake behaviours listed in the specs.
+- **What has actually run:** the Java compiles against Flink 1.20.0. The SQL and Python have not been executed; the Python is syntax-checked only.
+- Sizing, cost, and the recovery and latency targets are estimates, not measurements.
 - The regulatory points are my reading, not legal advice.
 
-**Actually run:** the Java compiles against Flink 1.20.0. The SQL and Python have not been executed; the Python is syntax-checked only.
-
-**Size:** about 550 lines of guarantee code, against the brief's rough 200–400, plus about 355 lines of plumbing kept so the job compiles. The README counts the two separately.
-
-**AI vs my decisions.** I used Claude (Anthropic's model) as a design partner, and to draft the specs, code and this document. The process:
+### 10.3 Where I used AI vs. made the decisions myself
+I used Claude (Anthropic's model) as a design partner, and to draft the specs, code and this document. The process:
 - Claude proposed options with trade-offs, and I made the calls.
 - I kept an internal log of every decision, recording who proposed it and who decided it. This section summarises it.
 - I approved each hard problem's spec before its code was written.
@@ -310,7 +311,8 @@ The split:
   - Claude corrected its own archive advice, which led to tokenising at capture.
   - I first proposed Snowflake as the service database, and switched to MySQL/Postgres after discussion.
 
-**Sources:**
+## 11. Sources
+
 - Snowflake docs: Kafka connector v4, and v3 with Iceberg; Snowpipe Streaming classic; Iceberg tables; CREATE STREAM; Horizon external engines; supported regions
 - Debezium PR #7764
 - Flink Kafka connector docs
