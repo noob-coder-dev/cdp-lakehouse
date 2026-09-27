@@ -1,0 +1,6 @@
+# Test dependencies (Python 3.11): python3.11 -m venv .venv && .venv/bin/pip install -r tests/requirements.txt
+hypothesis>=6.100
+pytest>=8.0
+snowflake-connector-python>=3.12
+pyspark==3.5.*
+boto3>=1.34

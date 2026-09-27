@@ -1,0 +1,18 @@
+# Build output
+flink-cdc-normalizer/target/
+flink-cdc-normalizer/dependency-reduced-pom.xml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.hypothesis/
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+
+# Internal working notes, kept locally only
+docs/discussion-and-decisions.md
